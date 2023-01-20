@@ -27,7 +27,6 @@ body {
 
 .calculator-screen {
     width: 100%;
-    text-align: right;
     font-size: 5rem;
     height: 80px;
     color: white;
