@@ -10,13 +10,16 @@
 </head>
 <body>
     <div class="calculator">
-        <input type="text" class="calculator-screen histroy" value="" disabled />
-        <input type="text" id="screen" class="calculator-screen" value="0" disabled />
+        <input type="text" id="history" class="calculator-screen histroy" value="" disabled />
+        <div class="calculator-screen">
+            <input type="text" id="screen-input" value="" onblur="this.focus()" autofocus/>
+            <div id="screen-error"></div>
+        </div>
 
         <div class="calculator-keys">
             <button type="button" class="operator" value="+">+</button>
             <button type="button" class="operator" value="-">-</button>
-            <button type="button" class="operator" value="&times;">&times;</button>
+            <button type="button" class="operator" value="*">&times;</button>
             <button type="button" class="operator" value="/">&divide;</button>
 
             <button type="button" value="7">7</button>
@@ -36,7 +39,7 @@
 
             <button type="button" value="0">0</button>
 
-            <button type="button" class="backspace" value="backspace">←</button>
+            <button type="button" class="backspace" value="backspace">⬅</button>
             <button type="button" class="decimal" value=".">.</button>
             
             <button type="button" class="all-clear" value="all-clear">AC</button>
