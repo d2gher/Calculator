@@ -2,31 +2,40 @@ let keys = document.querySelectorAll(".calculator-keys button");
 let screen = document.querySelector("#screen-input");
 
 keys.forEach(function(key) {key.addEventListener("click", updateScreen)})
-screen.addEventListener("input", evaluate);
-
-let num1 = null;
-let num2 = null;
-let operator = null;
-
-function evaluate() {
-    screen.value = screen.value.replaceAll("*", "×");
-    let value = screen.value;
-
-    let isOperator = checkIfOperator(checkIfOperator(value[value.length - 1]));
-    if (isOperator && checkIfOperator(value[value.length - 2])) {
-        screen.value = value.slice(0, -1);
-        value = screen.value;
+window.addEventListener("keydown", (e) => {
+    if (e.key == "-") {
+        e.preventDefault();
+        screen.value += "–"
+        evaluate();
     }
 
-    
-}
+})
+screen.addEventListener("input", evaluate);
 
-function checkIfOperator(lastChar) {
-    if (lastChar == "+") return "+";
-    if (lastChar == "-") return "-";
-    if (lastChar == "×") return "×";
-    if (lastChar == "/") return "/";
-    return false;
+
+let operators = ["+", "–", "/", "*", "="];
+
+function evaluate() {
+    let equation = screen.value;
+
+
+    let doubleOperators = equation.slice(-2).split("").filter(char => operators.includes(char));
+    if (doubleOperators.length == 2) equation = equation.slice(0,-2) + equation.slice(-1);
+
+    const operatorsInString = equation.split("").filter(char => operators.includes(char));
+
+    if(operatorsInString.length == 2) {
+        equation = equation.slice(0, -1)
+        let operator = operatorsInString[0];
+        let num1 = equation.split(operator)[0];
+        let num2 = equation.split(operator)[1];
+        let result = operate(operator, num1, num2);
+        result = Math.round((result + Number.EPSILON) * 100) / 100
+        equation = result;
+        if (screen.value.slice(-1) != "=") equation += screen.value.slice(-1);
+    }
+
+    screen.value = equation;
 }
 
 function updateScreen() {
@@ -37,12 +46,15 @@ function updateScreen() {
     evaluate();
 }
 
-function operate(operator, num1, num2) {
-    return operator(num1, num2)
+function operate(operator, a, b) {
+    if (operator == "+") return add(a, b);
+    if (operator == "–") return subtract(a, b);
+    if (operator == "*") return multiply(a, b);
+    if (operator == "/") return divide(a, b);
 }
 
 function add(a, b) {
-    return a + b
+    return +a + +b
 }
 
 function subtract(a, b) {
