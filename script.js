@@ -1,5 +1,6 @@
 let keys = document.querySelectorAll(".calculator-keys button");
 let screen = document.querySelector("#screen-input");
+let screen_error = document.querySelector("#screen-error");
 
 keys.forEach(function(key) {key.addEventListener("click", updateScreen)})
 window.addEventListener("keydown", (e) => {
@@ -16,8 +17,9 @@ screen.addEventListener("input", evaluate);
 let operators = ["+", "–", "/", "*", "="];
 
 function evaluate() {
+    screen_error.textContent = ""
     let equation = screen.value;
-
+    let equationBackUp = equation;
 
     let doubleOperators = equation.slice(-2).split("").filter(char => operators.includes(char));
     if (doubleOperators.length == 2) equation = equation.slice(0,-2) + equation.slice(-1);
@@ -31,8 +33,20 @@ function evaluate() {
         let num2 = equation.split(operator)[1];
         let result = operate(operator, num1, num2);
         result = Math.round((result + Number.EPSILON) * 100) / 100
-        equation = result;
+        // equation = result;
         if (screen.value.slice(-1) != "=") equation += screen.value.slice(-1);
+        if (isNaN(result)) {
+            screen_error.textContent = "Learn how to write basic math";
+        } else if (result == "Infinity") {
+            screen_error.textContent = "Now you are just kidding";
+        } else {
+            equation = result;
+        }
+        if (screen.value.slice(-1) != "=") equation += screen.value.slice(-1);
+    }
+
+    if (equation.slice(-1) == "=") {
+        equation = equation.slice(0, -1);
     }
 
     screen.value = equation;
