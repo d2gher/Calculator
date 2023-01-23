@@ -45,9 +45,10 @@ function evaluate() {
             addToHistory(equation.slice(0, -1), result);
             equation = result;
         }
-
+        // Add the last operator pressed if it was not Equal
         if (screen.value.slice(-1) != "=") equation += screen.value.slice(-1);
     } else {
+        // Do operation if there is no operators and Equal has been pressed
         if (equation.slice(-1) == "=") {
             addToHistory(equation.slice(0, -1), equation.slice(0, -1));
             equation = equation.slice(0, -1);
@@ -78,8 +79,30 @@ function updateScreen() {
     let key = this.value;
     if (key == "all-clear") screen.value = ""
     else if (key == "backspace") screen.value = screen.value.slice(0, -1);
+    else if (key == "±") addPlusMinus();
     else screen.value += key;
     evaluate();
+}
+
+function addPlusMinus() {
+    let value = screen.value;
+    let operatorFound = -1;
+    let minusFound = -1;
+
+    for(let i = value.length -1; i >= 0; i--) {
+        if (operators.includes(value[i])) {
+            operatorFound = i;
+            break;
+        }
+        if (value[i] == "-") minusFound = i;
+    }
+
+    console.log(operatorFound, minusFound);
+    if (operatorFound == -1 && minusFound == -1) value = "-" + value;
+    else if (operatorFound != -1 && minusFound != -1) value = value.removeAt(operatorFound + 1);
+    else if (operatorFound == -1 && minusFound != -1) value = value.removeAt(minusFound);
+    else if (operatorFound != -1 && minusFound == -1) value = value.replaceAt(operatorFound + 1, "-" + value[operatorFound + 1]);
+    screen.value = value;
 }
 
 function operate(operator, a, b) {
@@ -90,17 +113,28 @@ function operate(operator, a, b) {
 }
 
 function add(a, b) {
-    return +a + +b
+    return +a + +b;
 }
 
 function subtract(a, b) {
-    return a - b
+    return a - b;
 }
 
 function multiply(a, b) {
-    return a * b
+    return a * b;
 }
 
 function divide(a, b) {
-    return a / b
+    return a / b;
 }
+
+String.prototype.replaceAt = function(index, replacement) {
+    return this.substring(0, index) + replacement + this.substring(index + 1);
+}
+
+String.prototype.removeAt = function(index) {
+    let arr = this.split("");
+    arr.splice(index, 1);
+    return arr.join("");
+}
+
