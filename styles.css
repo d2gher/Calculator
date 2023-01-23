@@ -23,7 +23,8 @@ body {
     width: 400px;
     border: 1px solid black;
     border-radius: 10px;
-    box-shadow: 3px 3px 10px #0000005c
+    box-shadow: 3px 3px 10px #0000005c;
+    margin: 10px;
 }
 
 .calculator-screen {
