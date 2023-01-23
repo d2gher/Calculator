@@ -1,6 +1,7 @@
 let keys = document.querySelectorAll(".calculator-keys button");
 let screen = document.querySelector("#screen-input");
 let screen_error = document.querySelector("#screen-error");
+let history = document.querySelector("#history");
 
 keys.forEach(function(key) {key.addEventListener("click", updateScreen)})
 window.addEventListener("keydown", (e) => {
@@ -28,28 +29,50 @@ function evaluate() {
 
     if(operatorsInString.length == 2) {
         equation = equation.slice(0, -1)
+
         let operator = operatorsInString[0];
         let num1 = equation.split(operator)[0];
         let num2 = equation.split(operator)[1];
         let result = operate(operator, num1, num2);
         result = Math.round((result + Number.EPSILON) * 100) / 100
-        // equation = result;
+
+        // Handle errors
         if (screen.value.slice(-1) != "=") equation += screen.value.slice(-1);
         if (isNaN(result)) {
             screen_error.textContent = "Learn how to write basic math";
         } else if (result == "Infinity") {
             screen_error.textContent = "Now you are just kidding";
         } else {
+            addToHistory(equation.slice(0, -1), result);
             equation = result;
         }
-        if (screen.value.slice(-1) != "=") equation += screen.value.slice(-1);
-    }
 
-    if (equation.slice(-1) == "=") {
-        equation = equation.slice(0, -1);
+        if (screen.value.slice(-1) != "=") equation += screen.value.slice(-1);
+    } else {
+        if (equation.slice(-1) == "=") {
+            addToHistory(equation.slice(0, -1), equation.slice(0, -1));
+            equation = equation.slice(0, -1);
+        }
     }
 
     screen.value = equation;
+}
+
+function addToHistory(equation, result) {
+    let container = document.createElement("div");
+    let div1 = document.createElement("div");
+    let div2 = document.createElement("div");
+    let div3 = document.createElement("div");
+
+    div1.textContent = equation;
+    div2.textContent = "=";
+    div3.textContent = result;
+
+    container.appendChild(div1);
+    container.appendChild(div2);
+    container.appendChild(div3);
+
+    history.appendChild(container);
 }
 
 function updateScreen() {

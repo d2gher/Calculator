@@ -8,6 +8,7 @@ html {
     margin: 0;
     padding: 0;
     box-sizing: inherit;
+    font-family: Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
@@ -39,10 +40,10 @@ body {
 #screen-input {
     width: 100%;
     height: 50%;
-    font-size: 3rem;
+    font-size: 2.5rem;
+    font-weight: 550;
     color: white;
     border: none;
-    border-top: inherit;
     background-color: inherit;
 }
 
@@ -57,8 +58,36 @@ body {
 }
 
 .calculator-screen.histroy { 
+    display: flex;
+    flex-direction: column;
     height: 160px;
     border-radius: 10px 10px 0 0;
+    padding: 10px;
+    font-size: 1.5rem;
+    color: rgb(196, 196, 196);
+    overflow: auto;
+}
+
+.calculator-screen.histroy > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 2px 0;
+}
+
+.calculator-screen.histroy > div > div:nth-child(1) {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    overflow: auto;
+}
+
+.calculator-screen.histroy > div > div:nth-child(2) {
+    text-align: center;
+}
+
+.calculator-screen.histroy > div > div:nth-child(3) {
+    text-align: right;
+    font-weight: 550;
+    overflow: hidden;
 }
 
 .calculator-keys {
@@ -74,6 +103,7 @@ body {
 
 button {
     font-size: 2rem;
+    font-weight: 550;
     height: 60px;
     color: white;
     background-color: rgb(46, 46, 46);
