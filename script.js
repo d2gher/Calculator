@@ -10,18 +10,17 @@ window.addEventListener("keydown", (e) => {
         screen.value += "–"
         evaluate();
     }
-
 })
 screen.addEventListener("input", evaluate);
 
 
-let operators = ["+", "–", "/", "*", "="];
+let operators = ["+", "–", "/", "×", "="];
 
 function evaluate() {
     screen_error.textContent = ""
+    screen.value = screen.value.replaceAll("*", "×");
     let equation = screen.value;
-    let equationBackUp = equation;
-
+    
     let doubleOperators = equation.slice(-2).split("").filter(char => operators.includes(char));
     if (doubleOperators.length == 2) equation = equation.slice(0,-2) + equation.slice(-1);
 
@@ -86,7 +85,7 @@ function updateScreen() {
 function operate(operator, a, b) {
     if (operator == "+") return add(a, b);
     if (operator == "–") return subtract(a, b);
-    if (operator == "*") return multiply(a, b);
+    if (operator == "×") return multiply(a, b);
     if (operator == "/") return divide(a, b);
 }
 
