@@ -19,6 +19,8 @@ let operators = ["+", "–", "/", "×", "="];
 function evaluate() {
     screen_error.textContent = ""
     screen.value = screen.value.replaceAll("*", "×");
+    if(screen.value.slice(-1) == ".") addDismal();
+
     let equation = screen.value;
     
     let doubleOperators = equation.slice(-2).split("").filter(char => operators.includes(char));
@@ -96,12 +98,26 @@ function addPlusMinus() {
         }
         if (value[i] == "-") minusFound = i;
     }
-
-    console.log(operatorFound, minusFound);
+    
     if (operatorFound == -1 && minusFound == -1) value = "-" + value;
     else if (operatorFound != -1 && minusFound != -1) value = value.removeAt(operatorFound + 1);
     else if (operatorFound == -1 && minusFound != -1) value = value.removeAt(minusFound);
     else if (operatorFound != -1 && minusFound == -1) value = value.replaceAt(operatorFound + 1, "-" + value[operatorFound + 1]);
+    screen.value = value;
+}
+
+function addDismal() {
+    let value = screen.value.slice(0, -1);
+    let dismalFound = -1;
+
+    for(let i = value.length -1; i >= 0; i--) {
+        if (operators.includes(value[i])) {
+            break;
+        }
+        if (value[i] == ".") dismalFound = i;
+    }
+    
+    if (dismalFound == -1) value += ".";
     screen.value = value;
 }
 
