@@ -41,7 +41,7 @@ function evaluate() {
         if (screen.value.slice(-1) != "=") equation += screen.value.slice(-1);
         if (isNaN(result)) {
             screen_error.textContent = "Learn how to write basic math";
-        } else if (result == "Infinity") {
+        } else if (result == "Infinity" || result == "-Infinity") {
             screen_error.textContent = "Now you are just kidding";
         } else {
             addToHistory(equation.slice(0, -1), result);
