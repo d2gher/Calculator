@@ -44,7 +44,7 @@ function evaluate() {
         } else if (result == "Infinity" || result == "-Infinity") {
             screen_error.textContent = "Now you are just kidding";
         } else {
-            addToHistory(equation.slice(0, -1), result);
+            addToHistory(equation, result);
             equation = result;
         }
         // Add the last operator pressed if it was not Equal
